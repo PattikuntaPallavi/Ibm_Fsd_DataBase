@@ -1,0 +1,52 @@
+1> List department wise employee count
+   mysql> SELECT DEPARTMENT,COUNT(*) FROM EMPLOYEE GROUP BY DEPARTMENT;
++------------+----------+
+| DEPARTMENT | COUNT(*) |
++------------+----------+
+| Admin      |        3 |
+| IT         |        4 |
++------------+----------+
+2 rows in set (0.00 sec)
+
+2> List department have salary more than 30000
+   
+   mysql> SELECT DEPARTMENT,SALARY FROM EMPLOYEE WHERE SALARY>30000;
++------------+--------+
+| DEPARTMENT | SALARY |
++------------+--------+
+| Admin      |  35000 |
+| Admin      |  35000 |
+| IT         |  35000 |
+| IT         |  35000 |
+| IT         |  35000 |
+| Admin      |  35000 |
+| IT         |  35000 |
++------------+--------+
+7 rows in set (0.00 sec)
+
+3>List country,department wise avg salary
+
+  mysql> SELECT C.NAME,e.DEPARTMENT,AVG(SALARY) AS SALARY FROM EMPLOYEE e JOIN COUNTRY C ON e.COUNTRY_ID=C.country_ID GROUP BY DEPARTMENT,c.COUNTRY_ID;
++-------+------------+------------+
+| NAME  | DEPARTMENT | SALARY     |
++-------+------------+------------+
+| India | Admin      | 35000.0000 |
+| JAPAN | Admin      | 35000.0000 |
+| India | IT         | 35000.0000 |
+| China | IT         | 35000.0000 |
+| JAPAN | IT         | 35000.0000 |
+| USA   | IT         | 35000.0000 |
++-------+------------+------------+
+6 rows in set (0.00 sec)
+4>List country,department have employee count more than 2 ordered
+  
+ SELECT C.NAME,e.COUNTRY_ID,e.DEPARTMENT,COUNT(*) FROM EMPLOYEE e INNER JOIN COUNTRY C ON e.COUNTRY_ID=C.country_ID GROUP BY e.DEPARTMENT,c.COUNTRY_ID HAVING COUNT(*)>1 ORDER BY e.DEPARTMENT;
++-------+------------+------------+----------+
+| NAME  | COUNTRY_ID | DEPARTMENT | COUNT(*) |
++-------+------------+------------+----------+
+| India |         91 | Admin      |        2 |
++-------+------------+------------+----------+
+1 row in set (0.00 sec)
+5>List department with employee name contains 'sa' and exists more than one country
+
+  SELECT DEPARTMENT,(SELECT NAME FROM EMPLOYEES WHERE NAME LIKE 'Da%') AS EMPLOYEES,COUNT(E.COUNTRY_ID) FROM EMPLOYEES E INNER JOIN COUNTRY C ON E.COUNTRY_ID=C.ID GROUP BY E.DEPARTMENT HAVING COUNT(E.COUNTRY_ID)>2;
